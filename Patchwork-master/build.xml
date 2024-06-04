@@ -1,0 +1,46 @@
+<project name="Patchwork" default="jar">
+    <property name="src" value="src"/>
+    <property name="build" value="classes"/>
+    <property name="lib" value="lib"/>
+    <property name="docs" value="docs"/>
+    <property name="jar" value="Patchwork.jar"/>
+    <property name="javadoc" value="docs/doc"/>
+
+    <target name="compile">
+        <mkdir dir="${build}"/>
+        <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+            <classpath>
+                <pathelement location="lib/zen5/zen5.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${jar}" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="Main"/>
+            </manifest>
+            <zipfileset src="lib/zen5/zen5.jar" includes="**/*.class"/>
+        </jar>
+    </target>
+
+    <target name="javadoc" depends="compile">
+        <mkdir dir="${javadoc}"/>
+        <javadoc destdir="${javadoc}">
+            <classpath>
+                <pathelement location="lib/zen5/zen5.jar"/>
+            </classpath>
+            <fileset dir="${src}"/>
+        </javadoc>
+    </target>
+
+    <target name="clean">
+        <delete>
+            <fileset dir="${build}">
+                <include name="*"/>
+            </fileset>
+        </delete>
+        <delete file="${jar}"/>
+        <delete dir="${javadoc}"/>
+    </target>
+</project>
